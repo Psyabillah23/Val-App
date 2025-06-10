@@ -1,0 +1,142 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--navbar-height);
+    background-color: var(--card-background);
+    box-shadow: var(--shadow-small);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-large);
+    z-index: 100;
+    /* Menambahkan ini untuk memastikan Navbar selalu di atas konten lain */
+    will-change: transform;
+    /* Menambahkan ini untuk memaksa hardware acceleration */
+    transform: translateZ(0);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    color: #061b43;
+}
+
+.navbar-center {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 var(--spacing-large);
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-medium);
+}
+
+.auth-buttons {
+    display: flex;
+    gap: var(--spacing-small);
+}
+
+.btn-login {
+    color: #061c43;
+    font-weight: 500;
+}
+
+.btn-register {
+    color: white;
+    background-color: #061b43;
+    padding: var(--spacing-xxsmall) var(--spacing-small);
+    border-radius: var(--border-radius-small);
+}
+
+.btn-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #061b43;
+    color: white;
+    font-size: var(--font-size-large);
+}
+
+.user-dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
+    background: none;
+    border: none;
+    padding: var(--spacing-xsmall);
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Menambahkan ini untuk mencegah shifting layout saat gambar dimuat */
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.user-name {
+    font-weight: 500;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+    width: 200px;
+    z-index: 10;
+}
+
+.dropdown-item {
+    display: block;
+    padding: var(--spacing-medium);
+    color: var(--text-color);
+    transition: background-color 0.2s;
+    border: none;
+    /* Memastikan semua dropdown item tidak memiliki border */
+    background: none;
+    /* Menyamakan background */
+    width: 100%;
+    /* Memastikan lebar penuh */
+    text-align: left;
+    /* Rata kiri teks */
+    cursor: pointer;
+    /* Menunjukkan bahwa elemen bisa diklik */
+}
+
+.dropdown-item:hover {
+    background-color: rgba(61, 68, 74, 0.05);
+    text-decoration: none;
+}
+
+.dropdown-item.logout {
+    color: var(--error-color);
+    width: 100%;
+    border: none;
+    /* Memastikan tidak ada border */
+    outline: none;
+    /* Menghilangkan outline saat fokus */
+    text-align: center;
+}

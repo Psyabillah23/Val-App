@@ -1,0 +1,177 @@
+/* MyWorksList.css */
+
+.my-works-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.my-works-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.my-works-header h2 {
+  color: #1f2937;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-add-news {
+  text-decoration: none;
+}
+
+.works-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.work-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.work-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.work-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.work-date {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.work-meta button {
+  transition: all 0.2s ease-in-out;
+}
+
+.work-meta button:hover {
+  transform: translateY(-1px);
+}
+
+/* Loading and Error States */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.error-message p {
+  color: #dc2626;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.reload-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.reload-btn:hover {
+  background: #b91c1c;
+}
+
+/* Empty State */
+.empty-works {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.empty-works p {
+  color: #6b7280;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .my-works-list {
+    padding: 15px;
+  }
+
+  .my-works-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .my-works-header h2 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .work-meta {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .work-item {
+    padding: 15px;
+  }
+
+  .empty-works {
+    padding: 40px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-works-header h2 {
+    font-size: 20px;
+  }
+
+  .work-item {
+    padding: 12px;
+  }
+
+  .work-meta {
+    gap: 8px;
+  }
+
+  .work-date {
+    font-size: 13px;
+  }
+}

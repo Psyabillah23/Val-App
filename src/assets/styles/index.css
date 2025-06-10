@@ -1,0 +1,372 @@
+/* Base CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+/* Import Variables */
+@import './variables.css';
+
+/* Typography */
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-medium);
+    line-height: 1.5;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: var(--font-size-xxlarge);
+}
+
+h2 {
+    font-size: var(--font-size-xlarge);
+}
+
+h3 {
+    display: flex;
+    font-size: var(--font-size-large);
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: rgb(27, 26, 26);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--font-family);
+}
+
+/* Layout */
+html,
+body {
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    padding-top: var(--navbar-height);
+}
+
+.content {
+    flex: 1;
+    padding: var(--spacing-large);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-primary {
+    color: var(--primary-color);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-success {
+    color: var(--success-color);
+}
+
+.text-error {
+    color: var(--error-color);
+}
+
+.mt-1 {
+    margin-top: var(--spacing-xsmall);
+}
+
+.mt-2 {
+    margin-top: var(--spacing-small);
+}
+
+.mt-3 {
+    margin-top: var(--spacing-medium);
+}
+
+.mt-4 {
+    margin-top: var(--spacing-large);
+}
+
+.mb-1 {
+    margin-bottom: var(--spacing-xsmall);
+}
+
+.mb-2 {
+    margin-bottom: var(--spacing-small);
+}
+
+.mb-3 {
+    margin-bottom: var(--spacing-medium);
+}
+
+.mb-4 {
+    margin-bottom: var(--spacing-large);
+}
+
+.my-1 {
+    margin-top: var(--spacing-xsmall);
+    margin-bottom: var(--spacing-xsmall);
+}
+
+.my-2 {
+    margin-top: var(--spacing-small);
+    margin-bottom: var(--spacing-small);
+}
+
+.my-3 {
+    margin-top: var(--spacing-medium);
+    margin-bottom: var(--spacing-medium);
+}
+
+.my-4 {
+    margin-top: var(--spacing-large);
+    margin-bottom: var(--spacing-large);
+}
+
+.p-1 {
+    padding: var(--spacing-xsmall);
+}
+
+.p-2 {
+    padding: var(--spacing-small);
+}
+
+.p-3 {
+    padding: var(--spacing-medium);
+}
+
+.p-4 {
+    padding: var(--spacing-large);
+}
+
+.rounded {
+    border-radius: var(--border-radius-small);
+}
+
+.rounded-md {
+    border-radius: var(--border-radius-medium);
+}
+
+.rounded-lg {
+    border-radius: var(--border-radius-large);
+}
+
+.shadow {
+    box-shadow: var(--shadow-small);
+}
+
+.shadow-md {
+    box-shadow: var(--shadow-medium);
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-large);
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-1 {
+    gap: var(--spacing-xsmall);
+}
+
+.gap-2 {
+    gap: var(--spacing-small);
+}
+
+.gap-3 {
+    gap: var(--spacing-medium);
+}
+
+.gap-4 {
+    gap: var(--spacing-large);
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.news-list,
+.bookmarks-list,
+.works-list {
+    contain: content;
+}
+
+/* Menambahkan skeleton loading state */
+.loading-skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    border-radius: var(--border-radius-small);
+}
+
+.loading-skeleton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0,
+            rgba(255, 255, 255, 0.2) 20%,
+            rgba(255, 255, 255, 0.5) 60%,
+            rgba(255, 255, 255, 0));
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Gunakan GPU untuk rendering dengan transform */
+.card,
+.navbar,
+.sidebar,
+.news-item,
+.news-detail,
+.profile-page,
+.bookmark-page,
+.my-works-page,
+.search-results {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Hindari animasi pada mobile untuk performa lebih baik */
+@media (max-width: 768px) {
+    .news-item:hover {
+        transform: none;
+        box-shadow: var(--shadow-small);
+    }
+}
+
+/* Tambahkan placeholder untuk gambar */
+img {
+    background-color: #f0f0f0;
+}
+
+/* Optimalkan performa font rendering */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Tambahkan CSS untuk LayoutWrapper untuk mencegah flickering antara navigasi */
+.layout-wrapper {
+    position: relative;
+    min-height: 100vh;
+}
+
+.page-transition-enter {
+    opacity: 0;
+}
+
+.page-transition-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+
+.page-transition-exit {
+    opacity: 1;
+}
+
+.page-transition-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+}

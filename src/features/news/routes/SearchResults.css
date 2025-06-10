@@ -1,0 +1,26 @@
+.search-results {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-small);
+    padding: var(--spacing-large);
+  }
+  
+  .search-title {
+    margin-bottom: var(--spacing-small);
+  }
+  
+  .search-query {
+    color: var(--primary-color);
+  }
+  
+  .results-count {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .empty-results {
+    text-align: center;
+    padding: var(--spacing-xxlarge);
+    color: var(--text-secondary);
+  }
+  

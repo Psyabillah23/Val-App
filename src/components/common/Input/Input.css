@@ -1,0 +1,33 @@
+.input-group {
+    margin-bottom: var(--spacing-large);
+}
+
+.input-label {
+    display: block;
+    margin-bottom: var(--spacing-xsmall);
+    font-weight: 500;
+}
+
+.input-field {
+    width: 100%;
+    padding: var(--spacing-small);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    font-family: var(--font-family);
+    font-size: var(--font-size-medium);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.input-error {
+    border-color: var(--error-color);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: var(--font-size-small);
+    margin-top: var(--spacing-xxsmall);
+}

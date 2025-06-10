@@ -1,0 +1,112 @@
+.news-detail {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-small);
+    padding: var(--spacing-large);
+  }
+  
+  .news-header {
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .news-title {
+    font-size: var(--font-size-xxlarge);
+    margin-bottom: var(--spacing-small);
+  }
+  
+  .news-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-secondary);
+  }
+  
+  .news-author {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
+  }
+  
+  .news-date {
+    font-size: var(--font-size-small);
+  }
+  
+  .news-image {
+    margin-bottom: var(--spacing-large);
+    text-align: center;
+  }
+  
+  .news-image img {
+    max-width: 100%;
+    border-radius: var(--border-radius-small);
+  }
+  
+  .news-content {
+    margin-bottom: var(--spacing-large);
+    line-height: 1.6;
+  }
+  
+  .news-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-medium) 0;
+    border-top: var(--border-width) solid var(--border-color);
+    border-bottom: var(--border-width) solid var(--border-color);
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .news-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-large);
+  }
+  
+  .news-comments, .news-likes {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xxsmall);
+    color: var(--text-secondary);
+  }
+  
+  .news-author-actions {
+    display: flex;
+    gap: var(--spacing-medium);
+  }
+  
+  .btn-edit, .btn-delete {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xxsmall);
+    padding: var(--spacing-xxsmall) var(--spacing-small);
+    border-radius: var(--border-radius-small);
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    background: none;
+    border: var(--border-width) solid var(--border-color);
+  }
+  
+  .btn-edit {
+    color: var(--info-color);
+  }
+  
+  .btn-delete {
+    color: var(--error-color);
+  }
+  
+  .news-comments-section {
+    margin-top: var(--spacing-xlarge);
+  }
+  
+  .comments-title {
+    margin-bottom: var(--spacing-large);
+  }
+  
+  .comments-login-prompt {
+    text-align: center;
+    padding: var(--spacing-large);
+    background-color: var(--background-color);
+    border-radius: var(--border-radius-small);
+    margin-bottom: var(--spacing-large);
+  }
+  

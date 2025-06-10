@@ -1,0 +1,47 @@
+:root {
+    /* Colors */
+    --primary-color: #3a0643;
+    --secondary-color: #ff9500;
+    --background-color: #f2f2f7;
+    --card-background: #ffffff;
+    --text-color: #1c1c1e;
+    --text-secondary: #6e6e73;
+    --border-color: #e5e5ea;
+    --success-color: #34c759;
+    --error-color: #ff3b30;
+    --warning-color: #ff9500;
+    --info-color: #5ac8fa;
+
+    /* Typography */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-small: 0.875rem;
+    --font-size-medium: 1rem;
+    --font-size-large: 1.25rem;
+    --font-size-xlarge: 1.5rem;
+    --font-size-xxlarge: 2rem;
+
+    /* Spacing */
+    --spacing-xxsmall: 0.25rem;
+    --spacing-xsmall: 0.5rem;
+    --spacing-small: 0.75rem;
+    --spacing-medium: 1rem;
+    --spacing-large: 1.5rem;
+    --spacing-xlarge: 2rem;
+    --spacing-xxlarge: 3rem;
+
+    /* Borders */
+    --border-radius-small: 0.25rem;
+    --border-radius-medium: 0.5rem;
+    --border-radius-large: 1rem;
+    --border-width: 1px;
+
+    /* Shadows */
+    --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+    /* Layout */
+    --navbar-height: 60px;
+    --sidebar-width: 240px;
+    --content-max-width: 1200px;
+}

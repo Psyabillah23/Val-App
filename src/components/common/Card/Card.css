@@ -1,0 +1,25 @@
+.card {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-small);
+    overflow: hidden;
+}
+
+.card-padding {
+    padding: var(--spacing-large);
+    justify-content: center;
+}
+
+.card-header {
+    margin-bottom: var(--spacing-medium);
+}
+
+.card-title {
+    font-size: var(--font-size-large);
+    margin-bottom: var(--spacing-xxsmall);
+}
+
+.card-subtitle {
+    color: var(--text-secondary);
+    font-size: var(--font-size-small);
+}

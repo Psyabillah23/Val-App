@@ -1,0 +1,6 @@
+.profile-page {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-small);
+    padding: var(--spacing-large);
+  }

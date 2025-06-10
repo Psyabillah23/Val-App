@@ -1,0 +1,56 @@
+.avatar {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .avatar-medium {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .avatar-large {
+    width: 128px;
+    height: 128px;
+  }
+  
+  .avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+  }
+  
+  .avatar-overlay-visible {
+    opacity: 1;
+  }
+  
+  .avatar-edit-text {
+    color: white;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+  }
+  
+  .avatar-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }

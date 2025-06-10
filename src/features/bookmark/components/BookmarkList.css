@@ -1,0 +1,97 @@
+.bookmarks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large, 16px);
+}
+
+.bookmark-item {
+  position: relative;
+  padding: var(--spacing-medium, 12px);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loading-indicator,
+.error-message,
+.empty-bookmarks {
+  text-align: center;
+  padding: var(--spacing-large, 24px);
+  color: var(--text-secondary, #666);
+}
+
+.reload-btn {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+}
+
+.reload-btn:hover {
+  background-color: #eee;
+}
+
+/* Remove bookmark button styles */
+.remove-bookmark-btn {
+  background: none;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--error-color, #ff3b30);
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transition: color 0.3s ease;
+}
+
+.remove-bookmark-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 59, 48, 0.15), rgba(255, 59, 48, 0));
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.remove-bookmark-btn:hover::before,
+.remove-bookmark-btn:focus::before {
+  opacity: 1;
+}
+
+.remove-bookmark-btn:hover,
+.remove-bookmark-btn:focus {
+  background: linear-gradient(135deg, #ff6159, #ff3b30);
+  color: #fff;
+  box-shadow:
+    0 4px 12px rgba(255, 59, 48, 0.5),
+    0 0 10px rgba(255, 59, 48, 0.7);
+  outline: none;
+}
+
+.remove-bookmark-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.remove-bookmark-btn:hover svg,
+.remove-bookmark-btn:focus svg {
+  transform: scale(1.15);
+  fill: #fff;
+}

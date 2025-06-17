@@ -1,124 +1,102 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../auth/hooks/useAuth';
-import CommentForm from './CommentForm';
-import Button from '../../../components/common/Button/Button';
-import { deleteComment } from '../services/newsService'; // ← ini bener
 import './CommentList.css';
 import defaultAvatar from '../../../assets/image/Profile.jpg';
 
-
-const CommentList = ({ newsId, comments = [], onCommentsUpdate }) => {
-  const { user } = useAuth();
-  const [editingCommentId, setEditingCommentId] = useState(null);
-
-  const handleEditClick = (commentId) => {
-    setEditingCommentId(commentId);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingCommentId(null);
-  };
-
-  const handleDeleteClick = async (commentId) => {
-    if (window.confirm('Are you sure you want to delete this comment?')) {
-      try {
-        await deleteComment(newsId, commentId);
-        // update list setelah delete
-        if (onCommentsUpdate) {
-          onCommentsUpdate();
-        }
-      } catch (error) {
-        console.error('Error deleting comment:', error);
-        alert('Failed to delete comment.');
-      }
-    }
-  };
+const CommentList = ({ comments, currentUserId, onDelete, onUpdate }) => {
+  const [editingId, setEditingId] = useState(null);
+  const [editContent, setEditContent] = useState('');
 
   const formatDate = (dateString) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    if (isNaN(date)) return '';
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
   };
 
-  const isCommentOwner = (comment) => {
-    return user && comment.author.id === user.uid;
+  const startEditing = (comment) => {
+    setEditingId(comment.id);
+    setEditContent(comment.content);
   };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditContent('');
+  };
+
+  const saveEdit = () => {
+    if (editContent.trim() === '') {
+      alert('Comment content cannot be empty');
+      return;
+    }
+    onUpdate(editingId, editContent.trim());
+    setEditingId(null);
+    setEditContent('');
+  };
+
+  if (!comments || comments.length === 0) {
+    return (
+      <div className="comments-empty">
+        <p>No comments yet. Be the first to comment!</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="comment-list">
-      <h3 className="comment-list-title">
-        Comments ({comments.length})
-      </h3>
+    <div className="comments-list">
+      {comments.map((comment) => {
+        const isAuthor = currentUserId === (comment.author && comment.author.id);
 
-      {/* Comments */}
-      <div className="comments">
-        {comments.length === 0 ? (
-          <p className="no-comments">No comments yet. Be the first to comment!</p>
-        ) : (
-          comments.map((comment) => (
-            <div key={comment.id} className="comment-item">
-              {editingCommentId === comment.id ? (
-                <CommentForm
-                  newsId={newsId}
-                  editingComment={comment}
-                  onCancelEdit={handleCancelEdit}
+        return (
+          <div key={comment.id} className="comment-item">
+            <div className="comment-header">
+              <div className="comment-author">
+                <img
+                  src={(comment.author && comment.author.profilePicture) || defaultAvatar}
+                  alt={(comment.author && comment.author.name) || 'Unknown'}
+                  className="author-avatar"
                 />
+                <span className="author-name">{(comment.author && comment.author.name) || 'Unknown'}</span>
+              </div>
+              <span className="comment-date">{formatDate(comment.createdAt)}</span>
+            </div>
+
+            <div className="comment-content">
+              {editingId === comment.id ? (
+                <>
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    rows={3}
+                    className="edit-textarea"
+                  />
+                  <div className="edit-buttons">
+                    <button onClick={saveEdit} className="btn-save">
+                      Save
+                    </button>
+                    <button onClick={cancelEditing} className="btn-cancel">
+                      Cancel
+                    </button>
+                  </div>
+                </>
               ) : (
-                <div className="comment-content">
-                  <div className="comment-header">
-                    <img
-                      src={comment.author.profilePicture || defaultAvatar}
-                      alt={comment.author.name}
-                      className="comment-author-avatar"
-                    />
-                    <div className="comment-meta">
-                      <span className="comment-author-name">
-                        {comment.author.name}
-                      </span>
-                      <span className="comment-date">
-                        {formatDate(comment.createdAt)}
-                        {comment.updatedAt && comment.updatedAt !== comment.createdAt && (
-                          <span className="comment-edited"> (edited)</span>
-                        )}
-                      </span>
-                    </div>
-
-                    {isCommentOwner(comment) && (
-                      <div className="comment-actions">
-                        <Button
-                          variant="ghost"
-                          size="small"
-                          onClick={() => handleEditClick(comment.id)}
-                          className="edit-comment-btn"
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="small"
-                          onClick={() => handleDeleteClick(comment.id)}
-                          className="delete-comment-btn"
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="comment-text">
-                    {comment.content}
-                  </div>
-                </div>
+                <p>{comment.content}</p>
               )}
             </div>
-          ))
-        )}
-      </div>
+
+            {isAuthor && editingId !== comment.id && (
+              <div className="comment-actions">
+                <button onClick={() => startEditing(comment)} className="btn-edit">
+                  Edit
+                </button>
+                <button onClick={() => onDelete(comment.id)} className="btn-delete">
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

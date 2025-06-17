@@ -6,7 +6,9 @@ import {
     addNews,
     deleteNews,
     addComment,
-    updateNews
+    updateNews,
+    updateComment,
+    deleteComment
 } from '../features/news/services/newsService';
 
 export const NewsContext = createContext();
@@ -130,6 +132,36 @@ export const NewsProvider = ({ children }) => {
         }
     }, [currentNews]);
 
+    const handleUpdateComment = useCallback(async (newsId, commentId, newContent) => {
+        setError(null);
+        try {
+            const updatedNews = await updateComment(newsId, commentId, newContent);
+            if (currentNews && currentNews.id === newsId) {
+                setCurrentNews(updatedNews);
+            }
+            setNews(prevNews => prevNews.map(item => item.id === newsId ? updatedNews : item));
+            return updatedNews;
+        } catch (err) {
+            setError(err.message || 'Failed to update comment');
+            throw err;
+        }
+    }, [currentNews]);
+
+    const handleDeleteComment = useCallback(async (newsId, commentId) => {
+        setError(null);
+        try {
+            const updatedNews = await deleteComment(newsId, commentId);
+            if (currentNews && currentNews.id === newsId) {
+                setCurrentNews(updatedNews);
+            }
+            setNews(prevNews => prevNews.map(item => item.id === newsId ? updatedNews : item));
+            return updatedNews;
+        } catch (err) {
+            setError(err.message || 'Failed to delete comment');
+            throw err;
+        }
+    }, [currentNews]);
+
     const contextValue = useMemo(() => ({
         news,
         currentNews,
@@ -141,7 +173,9 @@ export const NewsProvider = ({ children }) => {
         addNews: handleAddNews,
         deleteNews: handleDeleteNews,
         addComment: handleAddComment,
-        updateNews: handleUpdateNews
+        updateNews: handleUpdateNews,
+        updateComment: handleUpdateComment,
+        deleteComment: handleDeleteComment
     }), [
         news,
         currentNews,
@@ -153,7 +187,9 @@ export const NewsProvider = ({ children }) => {
         handleAddNews,
         handleDeleteNews,
         handleAddComment,
-        handleUpdateNews
+        handleUpdateNews,
+        handleUpdateComment,
+        handleDeleteComment
     ]);
 
     return (

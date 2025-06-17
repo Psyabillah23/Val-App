@@ -7,10 +7,9 @@ import CommentForm from './CommentForm';
 import './NewsDetail.css';
 import defaultAvatar from '../../../assets/image/Profile.jpg';
 
-
 const NewsDetail = ({ news }) => {
   const { user } = useAuth();
-  const { deleteNews } = useNews();
+  const { deleteNews, updateComment, deleteComment } = useNews();
   const navigate = useNavigate();
 
   const isAuthor = user && news.author?.id === user.uid;
@@ -55,6 +54,24 @@ const NewsDetail = ({ news }) => {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      try {
+        await deleteComment(news.id, commentId);
+      } catch (err) {
+        alert('Failed to delete comment: ' + (err.message || 'Unknown error'));
+      }
+    }
+  };
+
+  const handleUpdateComment = async (commentId, newContent) => {
+    try {
+      await updateComment(news.id, commentId, newContent);
+    } catch (err) {
+      alert('Failed to update comment: ' + (err.message || 'Unknown error'));
+    }
+  };
+
   return (
     <div className="news-detail">
       <div className="news-header">
@@ -80,17 +97,18 @@ const NewsDetail = ({ news }) => {
       <div className="news-content">
         <p>{news.content}</p>
 
-        {news.link && (() => {
-          const link = parseMarkdownLink(news.link);
-          if (!link) return null;
-          return (
-            <p className="news-link">
-              <a href={link.url} target="_blank" rel="noopener noreferrer">
-                {link.text}
-              </a>
-            </p>
-          );
-        })()}
+        {news.link &&
+          (() => {
+            const link = parseMarkdownLink(news.link);
+            if (!link) return null;
+            return (
+              <p className="news-link">
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  {link.text}
+                </a>
+              </p>
+            );
+          })()}
       </div>
 
       <div className="news-actions">
@@ -133,7 +151,12 @@ const NewsDetail = ({ news }) => {
           </div>
         )}
 
-        <CommentList comments={news.comments} />
+        <CommentList
+          comments={news.comments || []}
+          currentUserId={user?.uid}
+          onDelete={handleDeleteComment}
+          onUpdate={handleUpdateComment}
+        />
       </div>
     </div>
   );

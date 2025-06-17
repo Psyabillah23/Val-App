@@ -8,7 +8,7 @@ const NewsDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { currentNews, loading, error, getNewsById } = useNews();
-  
+
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -21,14 +21,14 @@ const NewsDetailPage = () => {
         }
       }
     };
-    
+
     fetchNews();
   }, [id, getNewsById, navigate]);
-  
+
   if (loading) {
     return <div className="loading-indicator">Loading...</div>;
   }
-  
+
   if (error) {
     return (
       <div className="error-message">
@@ -37,11 +37,11 @@ const NewsDetailPage = () => {
       </div>
     );
   }
-  
+
   if (!currentNews) {
     return <div className="loading-indicator">Loading...</div>;
   }
-  
+
   return (
     <div className="news-detail-page">
       <NewsDetail news={currentNews} />

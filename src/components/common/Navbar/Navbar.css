@@ -46,8 +46,11 @@
 }
 
 .btn-login {
-    color: #061c43;
+    color: #e4e6e9;
     font-weight: 500;
+    background-color: #061b43;
+    padding: var(--spacing-xxsmall) var(--spacing-small);
+    border-radius: var(--border-radius-small);
 }
 
 .btn-register {

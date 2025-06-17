@@ -109,7 +109,14 @@ const NewsListItem = ({ news }) => {
           </div>
 
           <h3 className="news-item-title">{news.title || 'No Title'}</h3>
-          <p className="news-item-excerpt">{news.content || ''}</p>
+          <p className="news-item-excerpt">
+            {news.content
+              ? news.content.length > 200
+                ? news.content.substring(0, news.content.lastIndexOf(' ', 200)) + '...'
+                : news.content
+              : ''}
+          </p>
+          
 
           <div className="news-item-footer">
             <span className="news-item-date">{formatDate(news.createdAt)}</span>

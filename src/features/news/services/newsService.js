@@ -1,4 +1,3 @@
-// src/features/news/services/newsService.js
 import { db } from '../../../firebase/firebaseConfig';
 import {
   collection,
@@ -101,6 +100,8 @@ export const addComment = async (newsId, comment) => {
     id: String(Date.now()), // Generate unique ID using timestamp
     ...comment,
     createdAt: new Date(),
+    likedBy: [],
+    likesCount: 0,
   };
 
   const updatedComments = [...(newsData.comments || []), newComment];
@@ -129,7 +130,6 @@ export const updateComment = async (newsId, commentId, newContent) => {
       : comment
   );
 
-  // Check if comment was found and updated
   const commentFound = updatedComments.some(comment =>
     comment.id === commentId && comment.content === newContent
   );
@@ -158,7 +158,6 @@ export const deleteComment = async (newsId, commentId) => {
 
   const updatedComments = comments.filter(comment => comment.id !== commentId);
 
-  // Check if comment was actually removed
   if (updatedComments.length === comments.length) {
     throw new Error('Comment not found');
   }
@@ -172,7 +171,46 @@ export const deleteComment = async (newsId, commentId) => {
   return { id: updatedDoc.id, ...updatedDoc.data() };
 };
 
-// Toggle like: tambah atau hapus userId di likedBy, update likesCount
+// Add a reply to a specific comment
+export const addReplyToComment = async (newsId, commentId, reply) => {
+  const docRef = doc(db, 'news', newsId);
+  const newsDoc = await getDoc(docRef);
+  if (!newsDoc.exists()) throw new Error('News not found');
+
+  const newsData = newsDoc.data();
+  const comments = newsData.comments || [];
+
+  const newReply = {
+    id: String(Date.now()),
+    ...reply,
+    createdAt: new Date(),
+  };
+
+  let commentFound = false;
+  const updatedComments = comments.map(comment => {
+    if (comment.id === commentId) {
+      commentFound = true;
+      const updatedReplies = [...(comment.replies || []), newReply];
+      return { ...comment, replies: updatedReplies };
+    }
+    return comment;
+  });
+
+  if (!commentFound) {
+    throw new Error('Comment to reply to not found');
+  }
+
+  await updateDoc(docRef, {
+    comments: updatedComments,
+    updatedAt: new Date(),
+  });
+
+  const updatedDoc = await getDoc(docRef);
+  return { id: updatedDoc.id, ...updatedDoc.data() };
+};
+
+
+// Toggle like on a specific news article
 export const toggleLike = async (newsId, userId) => {
   const docRef = doc(db, 'news', newsId);
   const newsDoc = await getDoc(docRef);
@@ -194,6 +232,51 @@ export const toggleLike = async (newsId, userId) => {
   await updateDoc(docRef, {
     likedBy: updatedLikedBy,
     likesCount: updatedLikesCount,
+    updatedAt: new Date(),
+  });
+
+  const updatedDoc = await getDoc(docRef);
+  return { id: updatedDoc.id, ...updatedDoc.data() };
+};
+
+// Toggle like on a specific comment
+export const toggleCommentLike = async (newsId, commentId, userId) => {
+  const docRef = doc(db, 'news', newsId);
+  const newsDoc = await getDoc(docRef);
+  if (!newsDoc.exists()) throw new Error('News not found');
+
+  const newsData = newsDoc.data();
+  const comments = newsData.comments || [];
+
+  let commentFound = false;
+  const updatedComments = comments.map(comment => {
+    if (comment.id === commentId) {
+      commentFound = true;
+      const likedBy = comment.likedBy || [];
+      const hasLiked = likedBy.includes(userId);
+
+      let updatedLikedBy;
+      if (hasLiked) {
+        updatedLikedBy = likedBy.filter(id => id !== userId);
+      } else {
+        updatedLikedBy = [...likedBy, userId];
+      }
+
+      return {
+        ...comment,
+        likedBy: updatedLikedBy,
+        likesCount: updatedLikedBy.length,
+      };
+    }
+    return comment;
+  });
+
+  if (!commentFound) {
+    throw new Error('Comment not found');
+  }
+
+  await updateDoc(docRef, {
+    comments: updatedComments,
     updatedAt: new Date(),
   });
 

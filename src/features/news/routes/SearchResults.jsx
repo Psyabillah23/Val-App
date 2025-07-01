@@ -1,116 +1,137 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useNews } from '../hooks/useNews';
 import NewsListItem from '../components/NewsListItem';
 import './SearchResults.css';
 
 const SearchResults = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { searchNews } = useNews();
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const searchTimeoutRef = useRef(null);
+  const { news, loading, error, loadNews } = useNews();
 
-  // Initialize search query from URL on component mount
-  useEffect(() => {
-    const query = new URLSearchParams(location.search).get('q') || '';
-    setSearchQuery(query);
+  const [allNews, setAllNews] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+
+  // Get query from URL
+  const urlQuery = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return (params.get('q') || '').trim();
   }, [location.search]);
 
-  // Real-time search effect with debounce
+  // Initialize search input dengan URL query
   useEffect(() => {
-    const performSearch = async () => {
-      if (!searchQuery.trim()) {
-        setResults([]);
-        return;
-      }
+    setSearchInput(urlQuery);
+  }, [urlQuery]);
 
-      setLoading(true);
-      setError(null);
+  // Load all news data
+  useEffect(() => {
+    if (news && news.length > 0) {
+      setAllNews(news);
+    } else if (!loading) {
+      loadNews();
+    }
+  }, [news, loading, loadNews]);
 
-      try {
-        const searchResults = await searchNews(searchQuery);
-        setResults(searchResults);
-        // Update URL without page reload
-        navigate(`?q=${encodeURIComponent(searchQuery)}`, { replace: true });
-      } catch (err) {
-        setError(err.message || 'Search failed');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Real-time filtering berdasarkan searchInput
+  const filteredResults = useMemo(() => {
+    const query = searchInput.trim();
 
-    // Clear previous timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
+    if (!query) {
+      return allNews;
     }
 
-    // Set new timeout with debounce (300ms)
-    searchTimeoutRef.current = setTimeout(performSearch, 300);
+    const queryWords = query.toLowerCase().split(/\s+/).filter(word => word.length > 0);
 
-    // Cleanup function
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [searchQuery, searchNews, navigate]);
+    const results = allNews.filter(newsItem => {
+      const searchableText = [
+        newsItem.title || '',
+        newsItem.content || '',
+        newsItem.description || '',
+        (newsItem.author && newsItem.author.name) || '',
+        newsItem.accountName || '',
+        newsItem.source || '',
+        newsItem.category || ''
+      ].join(' ').toLowerCase();
 
-  const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+      return queryWords.every(word => searchableText.includes(word));
+    });
 
-  // Render items dengan useCallback untuk stabilitas
-  const renderResults = useCallback(() => {
-    return results.map(item => (
-      <NewsListItem key={item.id} news={item} />
-    ));
-  }, [results]);
+    return results;
+  }, [allNews, searchInput]);
+
+  // Cleanup - tidak perlu lagi
+
+  // Loading state
+  if (loading && allNews.length === 0) {
+    return (
+      <div className="search-results">
+        <div className="loading-indicator">Loading news...</div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="search-results">
+        <div className="error-message">
+          <p>Error: {error}</p>
+          <button onClick={loadNews} className="reload-btn">
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="search-results">
-      <div className="search-input-container">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleInputChange}
-          placeholder="Search news..."
-          className="search-input"
-          autoFocus
-        />
+      {/* Search Header */}
+      <div className="search-header">
+        <h1 className="search-title">
+          {searchInput.trim()
+            ? `Search results for: "${searchInput.trim()}"`
+            : 'All News'
+          }
+        </h1>
+
+        <div className="results-count">
+          <p>
+            {searchInput.trim()
+              ? `Found ${filteredResults.length} result${filteredResults.length !== 1 ? 's' : ''}`
+              : `Showing ${filteredResults.length} news article${filteredResults.length !== 1 ? 's' : ''}`
+            }
+          </p>
+        </div>
       </div>
 
-      <h1 className="search-title">
-        Search Results for: <span className="search-query">"{searchQuery}"</span>
-      </h1>
-
-      {loading && <div className="loading-indicator">Searching...</div>}
-
-      {error && (
-        <div className="error-message">
-          <p>Error: {error}</p>
-        </div>
-      )}
-
-      {!loading && !error && results.length === 0 && searchQuery && (
+      {/* Results */}
+      {filteredResults.length === 0 ? (
         <div className="empty-results">
-          <p>No results found for "{searchQuery}".</p>
+          <p>
+            {searchInput.trim()
+              ? `No results found for "${searchInput.trim()}". Try different keywords.`
+              : 'No news articles available.'
+            }
+          </p>
+          {searchInput.trim() && (
+            <div className="search-suggestions">
+              <p>Search tips:</p>
+              <ul>
+                <li>Try searching with broader keywords</li>
+                <li>Check your spelling</li>
+                <li>Search by author name or partial title</li>
+                <li>Use single words or short phrases</li>
+              </ul>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="news-list">
+          {filteredResults.map(item => (
+            <NewsListItem key={item.id} news={item} />
+          ))}
         </div>
       )}
-
-      <div className="results-count">
-        {!loading && !error && results.length > 0 && (
-          <p>Found {results.length} result{results.length !== 1 ? 's' : ''}</p>
-        )}
-      </div>
-
-      <div className="news-list">
-        {!loading && renderResults()}
-      </div>
     </div>
   );
 };
